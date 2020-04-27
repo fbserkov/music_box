@@ -1,6 +1,6 @@
 from datetime import datetime
-import os
 from importlib import reload
+import os
 from time import sleep
 
 from mutagen.mp3 import MP3
@@ -9,29 +9,19 @@ import pygame
 import playlist
 
 
-def check():
-    reload(playlist)
-    now = datetime.now()
-    current = 60 * now.hour + now.minute
+pygame.init()
+while True:
+    sleep(10)
+    try:
+        reload(playlist)
+    except SyntaxError:
+        pass
     for _dict in playlist.LIST:
-        expected = 60 * _dict['hour'] + _dict['minute']
-        print(current, expected)
-        if current == expected:
-            play(os.path.join(playlist.DIR, _dict['filename']))
-
-
-def get_length(filename):
-    return MP3(filename).info.length
-
-
-def play(filename):
-    pygame.init()
-    pygame.mixer.music.load(filename)
-    pygame.mixer.music.play()
-    sleep(get_length(filename))
-
-
-if __name__ == '__main__':
-    while True:
-        check()
-        sleep(10)
+        if (
+                datetime.now().hour == _dict['hour'] and
+                datetime.now().minute == _dict['minute']
+        ):
+            filename = os.path.join(playlist.DIR, _dict['filename'])
+            pygame.mixer.music.load(filename)
+            pygame.mixer.music.play()
+            sleep(MP3(filename).info.length)
