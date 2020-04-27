@@ -16,12 +16,13 @@ while True:
         reload(playlist)
     except SyntaxError:
         pass
-    for _dict in playlist.LIST:
-        if (
-                datetime.now().hour == _dict['hour'] and
-                datetime.now().minute == _dict['minute']
-        ):
-            filename = os.path.join(playlist.DIR, _dict['filename'])
+    for alarm in playlist.LIST:
+        hour, minute = map(int, alarm['time'].split(':'))
+        now = datetime.now()
+        if now.hour == hour and now.minute == minute:
+            print(alarm['time'], alarm['filename'])
+            filename = os.path.join(
+                playlist.DIR, alarm['filename'] + playlist.EXT)
             pygame.mixer.music.load(filename)
             pygame.mixer.music.play()
             sleep(MP3(filename).info.length)
