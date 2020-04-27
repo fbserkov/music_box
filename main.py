@@ -9,20 +9,30 @@ import pygame
 import playlist
 
 
-pygame.init()
-while True:
-    sleep(10)
+def play_file(filename):
+    pygame.mixer.music.load(filename)
+    pygame.mixer.music.play()
+    sleep(MP3(filename).info.length)
+
+
+def reload_playlist():
     try:
         reload(playlist)
-    except SyntaxError:
-        pass
-    for alarm in playlist.LIST:
-        hour, minute = map(int, alarm['time'].split(':'))
-        now = datetime.now()
-        if now.hour == hour and now.minute == minute:
-            print(alarm['time'], alarm['filename'])
-            filename = os.path.join(
-                playlist.DIR, alarm['filename'] + playlist.EXT)
-            pygame.mixer.music.load(filename)
-            pygame.mixer.music.play()
-            sleep(MP3(filename).info.length)
+    except SyntaxError as exc:
+        print(exc)
+        play_file('siren.mp3')
+    return playlist.LIST
+
+
+def main():
+    pygame.init()
+    while True:
+        sleep(10)
+        for item in reload_playlist():
+            if item['time'] == datetime.now().strftime('%H:%M'):
+                print(item['time'], item['name'])
+                play_file(os.path.join(playlist.DIR, item['mp3'] + '.mp3'))
+
+
+if __name__ == '__main__':
+    main()
