@@ -30,7 +30,7 @@ def main():
         sleep(10)
         for item in reload_playlist():
             if item['time'] == datetime.now().strftime('%H:%M'):
-                print(item['time'], item['name'])
+                print(item['time'], item['mp3'])
                 play_file(os.path.join(playlist.DIR, item['mp3'] + '.mp3'))
 
 
