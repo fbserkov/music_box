@@ -18,6 +18,11 @@ class Play:
         return f'{self.time} - {self.mp3}'
 
     def __call__(self):
+        if self.time == datetime.now().strftime('%H:%M'):
+            print(self)
+            self._play()
+
+    def _play(self):
         filename = os.path.join(Play.music_dir, self.mp3 + '.mp3')
         pygame.mixer.music.load(filename)
         pygame.mixer.music.set_volume(self.volume)
@@ -31,6 +36,4 @@ def start(music_dir, play_list):
     while True:
         sleep(10)
         for play in play_list:
-            if play.time == datetime.now().strftime('%H:%M'):
-                print(play)
-                play()
+            play()
