@@ -34,6 +34,6 @@ def start(music_dir, play_list):
     Play.music_dir = music_dir
     pygame.init()
     while True:
-        sleep(10)
+        sleep(1)
         for play in play_list:
             play()

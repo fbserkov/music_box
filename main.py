@@ -38,5 +38,5 @@ start(music_dir='/home/fedor/Music/', play_list=(
     Play(time='19:30', mp3='Zivert - Life'),  # break
 
     # Тест
-    Play(time='19:13', mp3='siren', volume=0.2),  # job
+    Play(time='19:20', mp3='siren', volume=0.2),  # job
 ))
