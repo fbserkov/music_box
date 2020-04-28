@@ -6,7 +6,7 @@ from time import sleep
 from mutagen.mp3 import MP3
 import pygame
 
-import playlist
+import main
 
 
 def play_file(filename):
@@ -17,11 +17,11 @@ def play_file(filename):
 
 def reload_playlist():
     try:
-        reload(playlist)
+        reload(main)
     except SyntaxError as exc:
         print(exc)
         play_file('siren.mp3')
-    return playlist.LIST
+    return main.LIST
 
 
 def main():
@@ -31,7 +31,7 @@ def main():
         for item in reload_playlist():
             if item['time'] == datetime.now().strftime('%H:%M'):
                 print(item['time'], item['mp3'])
-                play_file(os.path.join(playlist.DIR, item['mp3'] + '.mp3'))
+                play_file(os.path.join(main.DIR, item['mp3'] + '.mp3'))
 
 
 if __name__ == '__main__':
