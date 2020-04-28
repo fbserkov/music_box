@@ -6,17 +6,31 @@ from mutagen.mp3 import MP3
 import pygame
 
 
-def play_file(filename):
-    pygame.mixer.music.load(filename)
-    pygame.mixer.music.play()
-    sleep(MP3(filename).info.length)
+class Play:
+    music_dir = ''
+
+    def __init__(self, time, mp3, volume=1):
+        self.time = time  # TODO Проверка корректности значения времени
+        self.mp3 = mp3  # TODO Проверка существования файла
+        self.volume = volume
+
+    def __str__(self):
+        return f'{self.time} - {self.mp3}'
+
+    def __call__(self):
+        filename = os.path.join(Play.music_dir, self.mp3 + '.mp3')
+        pygame.mixer.music.load(filename)
+        pygame.mixer.music.set_volume(self.volume)
+        pygame.mixer.music.play()
+        sleep(MP3(filename).info.length)
 
 
-def main(music_dir, play_list):
+def start(music_dir, play_list):
+    Play.music_dir = music_dir
     pygame.init()
     while True:
         sleep(10)
-        for item in play_list:
-            if item['time'] == datetime.now().strftime('%H:%M'):
-                print(item['time'], item['mp3'])
-                play_file(os.path.join(music_dir, item['mp3'] + '.mp3'))
+        for play in play_list:
+            if play.time == datetime.now().strftime('%H:%M'):
+                print(play)
+                play()
