@@ -13,3 +13,11 @@ class Box:
             sleep(1)
             for play in self._music_tuple:
                 play()
+
+
+if __name__ == '__main__':  # tests
+    from datetime import datetime
+
+    Box(music_dir='', music_tuple=(
+        Music(time=datetime.now().strftime('%H:%M'), mp3='siren', volume=0.5),
+    )).start()
