@@ -11,6 +11,8 @@ class Music:
     _music_dir = ''
 
     def __init__(self, time, mp3, volume=1.0):
+        if len(time) == 5:
+            time += ':00'
         self.time = time  # TODO Проверка корректности значения времени
         self.mp3 = mp3  # TODO Проверка существования файла
         self.volume = volume
@@ -19,7 +21,7 @@ class Music:
         return f'{self.time} - {self.mp3}'
 
     def __call__(self):
-        if self.time == datetime.now().strftime('%H:%M'):
+        if self.time == datetime.now().strftime('%H:%M:%S'):
             print(self)
             self._play()
 
@@ -32,4 +34,4 @@ class Music:
 
 
 if __name__ == '__main__':  # tests
-    Music(time=datetime.now().strftime('%H:%M'), mp3='siren', volume=0.5)()
+    Music(time=datetime.now().strftime('%H:%M:%S'), mp3='siren', volume=0.5)()
