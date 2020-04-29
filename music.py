@@ -6,9 +6,9 @@ from mutagen.mp3 import MP3
 import pygame
 
 
-class Signal:
+class Music:
     pygame.init()
-    music_dir = ''
+    _music_dir = ''
 
     def __init__(self, time, mp3, volume=1.0):
         self.time = time  # TODO Проверка корректности значения времени
@@ -24,7 +24,7 @@ class Signal:
             self._play()
 
     def _play(self):
-        filename = os.path.join(Signal.music_dir, self.mp3 + '.mp3')
+        filename = os.path.join(Music._music_dir, self.mp3 + '.mp3')
         pygame.mixer.music.load(filename)
         pygame.mixer.music.set_volume(self.volume)
         pygame.mixer.music.play()
@@ -32,4 +32,4 @@ class Signal:
 
 
 if __name__ == '__main__':  # tests
-    Signal(time=datetime.now().strftime('%H:%M'), mp3='siren', volume=0.5)()
+    Music(time=datetime.now().strftime('%H:%M'), mp3='siren', volume=0.5)()
