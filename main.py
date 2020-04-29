@@ -1,6 +1,6 @@
-from music_box import Signal, start
+from box import Box, Signal
 
-start(music_dir='/home/fedor/Music/', play_list=(
+Box(directory='/home/fedor/Music/', playlist=(
     # Пара 1
     Signal(time='05:30', mp3='siren', volume=0.5),  # job
     Signal(time='06:15', mp3='candyman_19_cue_2b_piano'),  # break
@@ -36,4 +36,4 @@ start(music_dir='/home/fedor/Music/', play_list=(
     Signal(time='18:40', mp3='candyman_19_cue_2b_piano'),  # break
     Signal(time='18:45', mp3='siren', volume=0.5),  # job
     Signal(time='19:30', mp3='Zivert - Life'),  # break
-))
+)).start()
