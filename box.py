@@ -5,12 +5,15 @@ from music import Music
 class Box:
     def __init__(self, music_dir=''):
         self._music_dir = music_dir
-        self.music_tuple = None
+        self._music_list = []
+
+    def add_music(self, time, mp3=None, volume=1.0):
+        self._music_list.append(Music(time, mp3, volume))
 
     def start(self):
         Music._music_dir = self._music_dir
-        while self.music_tuple:
-            for play in self.music_tuple:
+        while self._music_list:
+            for play in self._music_list:
                 play()
             sleep(1)
 
@@ -20,10 +23,5 @@ if __name__ == '__main__':  # tests
 
     # TODO Несколько запусков
     box = Box()
-    box.music_tuple = (
-        Music(
-            time=datetime.now().strftime('%H:%M:%S'),
-            mp3='siren', volume=0.5
-        ),
-    )
+    box.add_music(time=datetime.now().strftime('%H:%M:%S'), mp3='gong')
     box.start()

@@ -35,4 +35,5 @@ class Music:
 
 
 if __name__ == '__main__':  # tests
-    Music(time=datetime.now().strftime('%H:%M:%S'), mp3='siren', volume=0.5)()
+    for _ in range(3):
+        Music(time=datetime.now().strftime('%H:%M:%S'), mp3='gong')()
