@@ -34,7 +34,7 @@ my_box.add_music(time='16:25', mp3='Zivert - Life'),  # break
 
 # Пара 6
 my_box.add_music(time='17:55', mp3='siren', volume=0.5),  # job
-my_box.add_music(time='18:34', mp3='candyman_19_cue_2b_piano'),  # break
+my_box.add_music(time='18:40', mp3='candyman_19_cue_2b_piano'),  # break
 my_box.add_music(time='18:45', mp3='siren', volume=0.5),  # job
 my_box.add_music(time='19:30', mp3='Zivert - Life'),  # break
 

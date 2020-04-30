@@ -1,5 +1,4 @@
 from datetime import date, datetime
-import os
 from time import sleep
 
 from mutagen.mp3 import MP3
@@ -9,24 +8,21 @@ pygame.init()
 
 
 class Music:
-    _music_dir = ''
-
-    def __init__(self, time, mp3, volume=1.0):
+    def __init__(self, time, filename, volume=1.0):
         time = time + ':00' if len(time) == 5 else time
         self._time = datetime.strptime(
             f'{date.today()} {time}', '%Y-%m-%d  %H:%M:%S')
-        self._mp3 = mp3 + '.mp3'  # TODO Проверка существования файла
+        self._filename = filename
         self.volume = volume
 
     def __str__(self):
-        return f'{self._time} - {self._mp3}'
+        return f'{self._time} - {self._filename}'
 
     def _play(self):
-        filename = os.path.join(Music._music_dir, self._mp3)
-        pygame.mixer.music.load(filename)
+        pygame.mixer.music.load(self._filename)
         pygame.mixer.music.set_volume(self.volume)
         pygame.mixer.music.play()
-        sleep(MP3(filename).info.length)
+        sleep(MP3(self._filename).info.length)
 
     def __call__(self):
         if str(self._time) == str(datetime.now()).split('.')[0]:  # TODO
@@ -36,4 +32,4 @@ class Music:
 
 if __name__ == '__main__':  # tests
     for _ in range(3):
-        Music(time=datetime.now().strftime('%H:%M:%S'), mp3='gong')()
+        Music(time=datetime.now().strftime('%H:%M:%S'), filename='gong.mp3')()

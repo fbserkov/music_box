@@ -1,4 +1,6 @@
+import os
 from time import sleep
+
 from music import Music
 
 
@@ -8,7 +10,10 @@ class Box:
         self._music_list = []
 
     def add_music(self, time, mp3=None, volume=1.0):
-        self._music_list.append(Music(time, mp3, volume))
+        if mp3:
+            # TODO Проверка существования файла
+            filename = os.path.join(self._music_dir, mp3 + '.mp3')
+            self._music_list.append(Music(time, filename, volume))
 
     def start(self):
         Music._music_dir = self._music_dir
