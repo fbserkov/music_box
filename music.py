@@ -5,9 +5,10 @@ from time import sleep
 from mutagen.mp3 import MP3
 import pygame
 
+pygame.init()
+
 
 class Music:
-    pygame.init()
     _music_dir = ''
 
     def __init__(self, time, mp3, volume=1.0):

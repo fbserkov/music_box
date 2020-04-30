@@ -1,6 +1,7 @@
 from box import Box, Music
 
-Box(music_dir='/home/fedor/Music/', music_tuple=(
+box = Box(music_dir='/home/fedor/Music/')
+box.music_tuple = (
     # Пара 1
     Music(time='05:30', mp3='siren', volume=0.5),  # job
     Music(time='06:15', mp3='candyman_19_cue_2b_piano'),  # break
@@ -36,4 +37,5 @@ Box(music_dir='/home/fedor/Music/', music_tuple=(
     Music(time='18:40', mp3='candyman_19_cue_2b_piano'),  # break
     Music(time='18:45', mp3='siren', volume=0.5),  # job
     Music(time='19:30', mp3='Zivert - Life'),  # break
-)).start()
+)
+box.start()

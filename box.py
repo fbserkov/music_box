@@ -3,14 +3,14 @@ from music import Music
 
 
 class Box:
-    def __init__(self, music_dir, music_tuple):
+    def __init__(self, music_dir=''):
         self._music_dir = music_dir
-        self._music_tuple = music_tuple
+        self.music_tuple = None
 
     def start(self):
         Music._music_dir = self._music_dir
-        while True:
-            for play in self._music_tuple:
+        while self.music_tuple:
+            for play in self.music_tuple:
                 play()
             sleep(1)
 
@@ -19,9 +19,11 @@ if __name__ == '__main__':  # tests
     from datetime import datetime
 
     # TODO Несколько запусков
-    Box(music_dir='', music_tuple=(
+    box = Box()
+    box.music_tuple = (
         Music(
             time=datetime.now().strftime('%H:%M:%S'),
             mp3='siren', volume=0.5
         ),
-    )).start()
+    )
+    box.start()
