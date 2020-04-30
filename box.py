@@ -1,3 +1,4 @@
+from datetime import datetime, timedelta
 import os
 from time import sleep
 
@@ -11,6 +12,7 @@ class Box:
 
     def add_music(self, time, mp3=None, volume=1.0):
         if mp3:
+            time = datetime.strptime(time, '%H:%M:%S').time()
             # TODO Проверка существования файла
             filename = os.path.join(self._music_dir, mp3 + '.mp3')
             self._music_list.append(Music(time, filename, volume))
@@ -24,9 +26,9 @@ class Box:
 
 
 if __name__ == '__main__':  # tests
-    from datetime import datetime
-
-    # TODO Несколько запусков
     box = Box()
-    box.add_music(time=datetime.now().strftime('%H:%M:%S'), mp3='gong')
+    now = datetime.now()
+    for _ in range(3):
+        box.add_music(now.strftime('%H:%M:%S'), mp3='gong')
+        now += timedelta(seconds=5)
     box.start()
