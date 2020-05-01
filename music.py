@@ -18,8 +18,11 @@ class Music:
         self._volume = volume
         self.time = None
 
+    def __str__(self):
+        return f'{self.time} - {self._filename}'
+
     def play(self):
-        print(self.time, '-', self._filename)
+        print(self)
         pygame.mixer.music.load(self._filename)
         pygame.mixer.music.set_volume(self._volume)
         pygame.mixer.music.play()
