@@ -8,31 +8,31 @@ pygame.init()
 
 
 class Music:
-    def __init__(self, time, filename, volume=1.0):
-        self._time = time
+    def __init__(self, filename, volume=1.0):
         self._filename = filename
         self.volume = volume
+        self.time = None
 
-    def __str__(self):
-        return f'{self._time} - {self._filename}'
-
-    def _play(self):
+    def play(self):
+        print(self.time, '-', self._filename)
         pygame.mixer.music.load(self._filename)
         pygame.mixer.music.set_volume(self.volume)
         pygame.mixer.music.play()
         sleep(MP3(self._filename).info.length)
 
-    def __call__(self):
+    def check(self):
         now = datetime.now().time()
         if (
-                self._time.hour == now.hour and
-                self._time.minute == now.minute and
-                self._time.second == now.second
+                self.time.hour == now.hour and
+                self.time.minute == now.minute and
+                self.time.second == now.second
         ):
-            print(self)
-            self._play()
+            self.play()
 
 
 if __name__ == '__main__':  # tests
-    for _ in range(3):
-        Music(time=datetime.now().time(), filename='gong.mp3')()
+    music = Music(filename='gong.mp3')
+    music.play()
+
+    music.time = datetime.now().time()
+    music.check()

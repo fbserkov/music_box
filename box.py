@@ -14,16 +14,17 @@ class Box:
     def add_music(self, time, mp3=None, volume=1.0):
         if mp3:
             time = datetime.strptime(time, '%H:%M:%S').time()
-            # TODO Проверка существования файла
             filename = os.path.join(self._music_dir, mp3 + '.mp3')
             assert os.path.exists(filename), 'No file ' + filename
-            self._music_list.append(Music(time, filename, volume))
+            music = Music(filename, volume)
+            music.time = time
+            self._music_list.append(music)
 
     def start(self):
         Music._music_dir = self._music_dir
         while self._music_list:
-            for play in self._music_list:
-                play()
+            for music in self._music_list:
+                music.check()
             sleep(1)
 
 
