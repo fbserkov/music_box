@@ -6,7 +6,8 @@ from music import Music
 
 
 class Box:
-    def __init__(self, music_dir=''):
+    def __init__(self, music_dir='./'):
+        assert os.path.exists(music_dir), 'No directory ' + music_dir
         self._music_dir = music_dir
         self._music_list = []
 
@@ -15,6 +16,7 @@ class Box:
             time = datetime.strptime(time, '%H:%M:%S').time()
             # TODO Проверка существования файла
             filename = os.path.join(self._music_dir, mp3 + '.mp3')
+            assert os.path.exists(filename), 'No file ' + filename
             self._music_list.append(Music(time, filename, volume))
 
     def start(self):
