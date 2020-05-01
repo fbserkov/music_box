@@ -1,4 +1,3 @@
-from datetime import datetime
 import os
 from time import sleep
 
@@ -28,21 +27,7 @@ class Music:
         pygame.mixer.music.play()
         sleep(MP3(self._filename).info.length)
 
-    def check(self):
-        assert self.time, 'No time'
-        now = datetime.now().time()
-        if (
-                self.time.hour == now.hour and
-                self.time.minute == now.minute and
-                self.time.second == now.second
-        ):
-            self.play()
-
 
 if __name__ == '__main__':  # tests
     music = Music(mp3='gong')
-    # music.check()
     music.play()
-
-    music.time = datetime.now().time()
-    music.check()
