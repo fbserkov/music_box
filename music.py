@@ -5,7 +5,7 @@ from random import choice
 class Music:
     directory = './'
 
-    def __init__(self, mp3=None, gain=1):
+    def __init__(self, mp3=None, gain=1):  # TODO Не только mp3 теперь
         if not mp3:
             mp3 = choice([
                 name[:-4] for name in os.listdir(Music.directory)
@@ -22,10 +22,11 @@ class Music:
 
     def play(self):
         print(self)
-        os.system(f'cvlc {self._filename} --gain {self._gain} --play-and-exit')
+        os.system(
+            f'cvlc "{self._filename}" --gain {self._gain} --play-and-exit')
 
 
-if __name__ == '__main__':
+if __name__ == '__main__':  # TODO Тест для файла с пробелом в имени
     print('\nТЕСТ: Воспроизведение звука гонга.')
     music = Music()
     music.play()
