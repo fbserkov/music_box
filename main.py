@@ -6,9 +6,9 @@ my_box = Box()
 Music.directory = '/home/fedor/Music/'
 siren = Music(mp3='siren', volume=0.5)
 candyman = Music(mp3='candyman_19_cue_2b_piano')
-zivert = Music(mp3='Zivert - Life')
+zivert = Music(mp3='Zivert - Life')  # TODO mp3=None - случайный файл
 
-# Пара 1
+# Пара 1  TODO Определять пару одной функцией
 my_box.add_music(time='05:30:00', music=siren),  # start
 my_box.add_music(time='06:15:00', music=candyman),  # end
 my_box.add_music(time='06:20:00', music=siren),  # start

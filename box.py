@@ -25,12 +25,16 @@ class Box:
     def start(self):
         time1 = datetime.now().time()
         while self._music_list:
+            # TODO Учёт длины файла, если он играет перед занятием
             music = self._music_list.pop(0)
             seconds = get_seconds(time1=time1, time2=music.time)
             if seconds > 0:
+                # TODO обновляемый таймер в консоли: "до следущего трека"
                 sleep(seconds)
                 music.play()
                 time1 = datetime.now().time()
+
+    # TODO отображение списка воспроизведения (Box.__str__)
 
 
 if __name__ == '__main__':  # tests

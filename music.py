@@ -2,7 +2,7 @@ import os
 from time import sleep
 
 from mutagen.mp3 import MP3
-import pygame
+import pygame  # TODO более легковесный способ проигрывания музыки
 
 pygame.init()
 
