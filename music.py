@@ -1,10 +1,16 @@
 import os
+from random import choice
 
 
 class Music:
     directory = './'
 
-    def __init__(self, mp3, gain=1):
+    def __init__(self, mp3=None, gain=1):
+        if not mp3:
+            mp3 = choice([
+                name[:-4] for name in os.listdir(Music.directory)
+                if name.endswith('.mp3')
+            ])
         filename = os.path.join(Music.directory, mp3 + '.mp3')
         assert os.path.exists(filename), 'No file ' + filename
         self._filename = filename
@@ -21,7 +27,7 @@ class Music:
 
 if __name__ == '__main__':
     print('\nТЕСТ: Воспроизведение звука гонга.')
-    music = Music(mp3='gong')
+    music = Music()
     music.play()
 
     print('\nТЕСТ: Воспроизведение с меньшей громкостью.')

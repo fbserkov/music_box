@@ -1,4 +1,4 @@
-import copy
+from copy import copy
 from datetime import datetime, timedelta
 from time import sleep
 
@@ -16,9 +16,9 @@ class Box:
     def __init__(self):
         self._music_list = []
 
-    def add_music(self, start, music):
+    def add_music(self, start, music=None):
         start = datetime.strptime(start, '%H:%M:%S').time()
-        music = copy.copy(music)
+        music = copy(music) if music else Music()
         music.start = start
         self._music_list.append(music)
 
