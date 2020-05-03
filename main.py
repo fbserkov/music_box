@@ -1,8 +1,5 @@
 from box import Box
-from music import Music
-
-my_box = Box()
-Music.directory = '/home/fedor/Music/'  # TODO Оно здесь надо?
+my_box = Box(directory='/home/fedor/Music/')
 
 # Пара 1  TODO Определять пару одной функцией
 my_box.add_music(start='05:30:00')  # start

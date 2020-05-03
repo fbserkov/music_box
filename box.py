@@ -13,20 +13,20 @@ def get_seconds(time1, time2):
 
 
 class Box:
-    def __init__(self):
-        self._music_list = []
+    def __init__(self, directory='./'):
+        self.directory = directory
+        self.music_list = []
 
     def add_music(self, start, music=None):
         start = datetime.strptime(start, '%H:%M:%S').time()
-        music = copy(music) if music else Music()
+        music = copy(music) if music else Music(self.directory)
         music.start = start
-        self._music_list.append(music)
+        self.music_list.append(music)
 
     def start(self):
         time1 = datetime.now().time()
-        while self._music_list:
-            # TODO Учёт длины файла, если он играет перед занятием
-            music = self._music_list.pop(0)
+        while self.music_list:
+            music = self.music_list.pop(0)
             seconds = get_seconds(time1=time1, time2=music.start)
             if seconds > 0:
                 # TODO обновляемый таймер в консоли: "до следущего трека"
@@ -37,10 +37,10 @@ class Box:
     # TODO отображение списка воспроизведения (Box.__str__)
 
 
-if __name__ == '__main__':
-    print('\nТЕСТ: Воспроизведение звука гонга через 5 секунд. Три раза.')
-    box = Box()
-    gong = Music(mp3='gong')
+def tests():
+    print('\nТЕСТ: Воспроизведение звука гонга через 5 секунд (3 раза).')
+    box = Box(directory='test_music')
+    gong = Music(box.directory)
 
     start = datetime.now()
     for _ in range(3):
@@ -48,3 +48,7 @@ if __name__ == '__main__':
         box.add_music(start=start.strftime('%H:%M:%S'), music=gong)
 
     box.start()
+
+
+if __name__ == '__main__':
+    tests()
