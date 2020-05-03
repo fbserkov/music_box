@@ -24,6 +24,25 @@ class Box:
         self.music_list.append(music)
         self.music_list.sort(key=lambda _: _.start)
 
+    def add_period(self, start, duration=timedelta(minutes=45)):  # TODO test
+        self.add_music(start)
+        start = (
+            datetime.strptime(start, '%H:%M:%S') +
+            duration
+        ).strftime('%H:%M:%S')
+        self.add_music(start)
+
+    def add_couple(
+            self, start,
+            durations=(timedelta(minutes=45), timedelta(minutes=5))
+    ):  # TODO test
+        self.add_period(start, durations[0])
+        start = (
+                datetime.strptime(start, '%H:%M:%S') +
+                durations[0] + durations[1]
+        ).strftime('%H:%M:%S')
+        self.add_period(start, durations[0])
+
     def __str__(self):
         return '\n'.join(str(_) for _ in self.music_list)
 
