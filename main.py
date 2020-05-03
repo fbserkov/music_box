@@ -37,4 +37,5 @@ my_box.add_music(start='18:40:00')  # end
 my_box.add_music(start='18:45:00')  # start
 my_box.add_music(start='19:30:00')  # end
 
+print(my_box)
 my_box.start()

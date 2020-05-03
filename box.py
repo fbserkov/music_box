@@ -24,6 +24,9 @@ class Box:
         self.music_list.append(music)
         self.music_list.sort(key=lambda _: _.start)
 
+    def __str__(self):
+        return '\n'.join(str(_) for _ in self.music_list)
+
     def start(self):
         time1 = datetime.now().time()
         while self.music_list:
@@ -35,15 +38,13 @@ class Box:
                 music.play()
                 time1 = datetime.now().time()
 
-    # TODO отображение списка воспроизведения (Box.__str__)
-
 
 def test1():
     box = Box(directory='test_music')
     box.add_music(start='01:00:00')
     box.add_music(start='03:00:00')
     box.add_music(start='02:00:00')
-    assert [_.start.hour for _ in box.music_list] == [1, 2, 3], 'test2'
+    assert [_.start.hour for _ in box.music_list] == [1, 2, 3], 'test1'
 
 
 def test2():
