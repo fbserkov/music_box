@@ -13,7 +13,7 @@ def get_seconds(time1, time2):
 
 
 class Box:
-    def __init__(self, directory='./'):
+    def __init__(self, directory):
         self.directory = directory
         self.music_list = []
 
@@ -22,6 +22,7 @@ class Box:
         music = copy(music) if music else Music(self.directory)
         music.start = start
         self.music_list.append(music)
+        self.music_list.sort(key=lambda _: _.start)
 
     def start(self):
         time1 = datetime.now().time()
@@ -37,18 +38,44 @@ class Box:
     # TODO отображение списка воспроизведения (Box.__str__)
 
 
-def tests():
-    print('\nТЕСТ: Воспроизведение звука гонга через 5 секунд (3 раза).')
+def test1():
     box = Box(directory='test_music')
-    gong = Music(box.directory)
+    box.add_music(start='01:00:00')
+    box.add_music(start='03:00:00')
+    box.add_music(start='02:00:00')
+    assert [_.start.hour for _ in box.music_list] == [1, 2, 3], 'test2'
 
+
+def test2():
+    # TODO Выбрать другой звук (для разнообразия)
+    print('\nТЕСТ: Воспроизведение звука гонга.')
+    box = Box(directory='test_music')
+    gong = Music(box.directory, mp3='gong')
+    start = datetime.now() + timedelta(seconds=1)
+    box.add_music(start.strftime('%H:%M:%S'), music=gong)
+    box.start()
+
+
+def test3():
+    # TODO Дабавить ещё несколько звуков в test_music
+    print('\nТЕСТ: Воспроизведение случайного звука.')
+    box = Box(directory='test_music')
+    start = datetime.now() + timedelta(seconds=1)
+    box.add_music(start.strftime('%H:%M:%S'))
+    box.start()
+
+
+def test4():
+    print('\nТЕСТ: Воспроизведение через 5, 10 и 15 секунд.')
+    box = Box(directory='test_music')
+    gong = Music(box.directory, mp3='gong')  # Длительность менее 5 секунд!
     start = datetime.now()
     for _ in range(3):
         start += timedelta(seconds=5)
         box.add_music(start=start.strftime('%H:%M:%S'), music=gong)
-
     box.start()
 
 
 if __name__ == '__main__':
-    tests()
+    for test in test1, test2, test3, test4:
+        test()
