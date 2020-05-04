@@ -4,7 +4,6 @@ import random
 
 class Music:
     def __init__(self, directory, mp3=None, gain=1.0):
-        # TODO Не только mp3 теперь
         if not mp3:
             mp3 = random.choice([
                 name[:-4] for name in os.listdir(directory)
@@ -31,21 +30,22 @@ def test1(names):
     for name in names:
         music = Music(directory='test_music', mp3=name)
         music.play()
-    assert input('Were the notes played in direct order? (y/n) ') == 'y'
+    assert input(
+        'Were the notes played in direct order? (y/n) ') == 'y', 'test1'
 
 
 def test2():
     for _ in range(10):
         music = Music(directory='test_music')
         music.play()
-    assert input('Were the notes played randomly? (y/n) ') == 'y'
+    assert input('Were the notes played randomly? (y/n) ') == 'y', 'test2'
 
 
 def test3(names):
     for i, name in enumerate(names):
         music = Music(directory='test_music', mp3=name, gain=1-i/10)
         music.play()
-    assert input('Did the playback volume decrease? (y/n) ') == 'y'
+    assert input('Did the playback volume decrease? (y/n) ') == 'y', 'test3'
 
 
 if __name__ == '__main__':

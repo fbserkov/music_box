@@ -1,5 +1,5 @@
 from copy import copy
-from datetime import datetime, timedelta
+from datetime import datetime, time, timedelta
 from time import sleep
 
 from music import Music
@@ -18,13 +18,13 @@ class Box:
         self.music_list = []
 
     def add_music(self, start, music=None):
-        start = datetime.strptime(start, '%H:%M:%S').time() # TODO add date!
+        start = datetime.strptime(start, '%H:%M:%S').time()  # TODO add date!
         music = copy(music) if music else Music(self.directory)
         music.start = start
         self.music_list.append(music)
         self.music_list.sort(key=lambda _: _.start)
 
-    def add_period(self, start, duration=timedelta(minutes=45)):  # TODO test
+    def add_period(self, start, duration=timedelta(minutes=45)):
         self.add_music(start)
         start = (
             datetime.strptime(start, '%H:%M:%S') +
@@ -35,7 +35,7 @@ class Box:
     def add_couple(
             self, start,
             durations=(timedelta(minutes=45), timedelta(minutes=5))
-    ):  # TODO test
+    ):
         self.add_period(start, durations[0])
         start = (
                 datetime.strptime(start, '%H:%M:%S') +
@@ -52,7 +52,6 @@ class Box:
             music = self.music_list.pop(0)
             seconds = get_seconds(time1=time1, time2=music.start)
             if seconds > 0:
-                # TODO обновляемый таймер в консоли: "до следущего трека"
                 sleep(seconds)
                 music.play()
                 time1 = datetime.now().time()
@@ -67,35 +66,53 @@ def test1():
 
 
 def test2():
-    # TODO Выбрать другой звук (для разнообразия)
-    print('\nТЕСТ: Воспроизведение звука гонга.')
     box = Box(directory='test_music')
-    gong = Music(box.directory, mp3='gong')
-    start = datetime.now() + timedelta(seconds=1)
-    box.add_music(start.strftime('%H:%M:%S'), music=gong)
-    box.start()
+    box.add_period(start='00:00:00')
+    assert (
+        [_.start for _ in box.music_list] ==
+        [time(0, 0), time(0, 45)]
+    ), 'test2'
 
 
 def test3():
-    # TODO Дабавить ещё несколько звуков в test_music
-    print('\nТЕСТ: Воспроизведение случайного звука.')
     box = Box(directory='test_music')
-    start = datetime.now() + timedelta(seconds=1)
-    box.add_music(start.strftime('%H:%M:%S'))
-    box.start()
+    box.add_couple(start='00:00:00')
+    assert (
+        [_.start for _ in box.music_list] ==
+        [time(0, 0), time(0, 45), time(0, 50), time(1, 35)]
+    ), 'test3'
 
 
 def test4():
-    print('\nТЕСТ: Воспроизведение через 5, 10 и 15 секунд.')
     box = Box(directory='test_music')
-    gong = Music(box.directory, mp3='gong')  # Длительность менее 5 секунд!
-    start = datetime.now()
-    for _ in range(3):
-        start += timedelta(seconds=5)
-        box.add_music(start=start.strftime('%H:%M:%S'), music=gong)
+    music = Music(box.directory)  # explicit music object
+    start = datetime.now() + timedelta(seconds=1)
+    box.add_music(start.strftime('%H:%M:%S'), music)
     box.start()
+    assert input('Did you hear the note? (y/n) ') == 'y', 'test4'
+
+
+def test5():
+    box = Box(directory='test_music')
+    start = datetime.now() + timedelta(seconds=1)
+    box.add_music(start.strftime('%H:%M:%S'))  # implicit music object
+    box.start()
+    assert input('Did you hear the note? (y/n) ') == 'y', 'test5'
+
+
+def test6():
+    box = Box(directory='test_music')
+    start = datetime.now()
+    for _ in range(5):
+        duration = 3  # more than file duration in test_music
+        start += timedelta(seconds=duration)
+        box.add_music(start=start.strftime('%H:%M:%S'))
+    box.start()
+    assert input(
+        'Did the notes sound every three seconds? (y/n) ') == 'y', 'test6'
 
 
 if __name__ == '__main__':
-    for test in test1, test2, test3, test4:
+    TESTS = test1, test2, test3, test4, test5, test6
+    for test in TESTS:
         test()
