@@ -18,7 +18,7 @@ class Box:
         self.music_list = []
 
     def add_music(self, start, music=None):
-        start = datetime.strptime(start, '%H:%M:%S').time()
+        start = datetime.strptime(start, '%H:%M:%S').time() # TODO add date!
         music = copy(music) if music else Music(self.directory)
         music.start = start
         self.music_list.append(music)

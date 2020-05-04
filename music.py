@@ -1,12 +1,12 @@
 import os
-from random import choice
+import random
 
 
 class Music:
-    def __init__(self, directory, mp3=None, gain=1):
+    def __init__(self, directory, mp3=None, gain=1.0):
         # TODO Не только mp3 теперь
         if not mp3:
-            mp3 = choice([
+            mp3 = random.choice([
                 name[:-4] for name in os.listdir(directory)
                 if name.endswith('.mp3')
             ])
@@ -25,11 +25,31 @@ class Music:
             f'cvlc "{self.filename}" --gain {self.gain} --play-and-exit')
 
 
-if __name__ == '__main__':  # TODO Тест для файла с пробелом в имени
-    print('\nТЕСТ: Воспроизведение звука гонга.')
-    music = Music(directory='test_music')
-    music.play()
+def test1(names):
+    # A space in the names is not accidental. Files with spaces in the name
+    # should not cause an error.
+    for name in names:
+        music = Music(directory='test_music', mp3=name)
+        music.play()
+    assert input('Were the notes played in direct order? (y/n) ') == 'y'
 
-    print('\nТЕСТ: Воспроизведение с меньшей громкостью.')
-    music.gain = 0.5
-    music.play()
+
+def test2():
+    for _ in range(10):
+        music = Music(directory='test_music')
+        music.play()
+    assert input('Were the notes played randomly? (y/n) ') == 'y'
+
+
+def test3(names):
+    for i, name in enumerate(names):
+        music = Music(directory='test_music', mp3=name, gain=1-i/10)
+        music.play()
+    assert input('Did the playback volume decrease? (y/n) ') == 'y'
+
+
+if __name__ == '__main__':
+    NAMES = 'd o', 'r e', 'm i', 'f a', 's o', 'l a', 's i'
+    test1(NAMES)
+    test2()
+    test3(reversed(NAMES))
