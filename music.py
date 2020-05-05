@@ -1,3 +1,4 @@
+from datetime import datetime
 import os
 import random
 
@@ -9,21 +10,22 @@ class Music:
                 name[:-4] for name in os.listdir(directory)
                 if name.endswith('.mp3')
             ])
-        filename = os.path.join(directory, mp3 + '.mp3')
-        assert os.path.exists(filename), 'No file ' + filename
-        self.filename = filename
+        self._directory = directory
+        self._mp3 = mp3
+        self._filename = os.path.join(directory, mp3 + '.mp3')
+        assert os.path.exists(self._filename), 'No file ' + self._filename
         self.gain = gain
         self.start = None
 
     def __str__(self):
         if self.start:
-            return f'{self.start.strftime("%H:%M:%S")} - {self.filename}'
-        return f'--.--.-- - {self.filename}'
+            return f'{self.start.strftime("%H:%M:%S")} - {self._mp3}'
+        return f'{datetime.now().strftime("%H:%M:%S")} - {self._mp3}'
 
     def play(self):
         print(self)
-        os.system(
-            f'cvlc "{self.filename}" --gain {self.gain} --play-and-exit')
+        cmd = 'cvlc "%s" --gain %s --play-and-exit 2> /dev/null'
+        os.system(cmd % (self._filename, self.gain))
 
 
 def test1(names):

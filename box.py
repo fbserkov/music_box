@@ -44,7 +44,7 @@ class Box:
     def __str__(self):
         return '\n'.join(str(_) for _ in self.music_list)
 
-    def start(self):
+    def start(self, test=False):
         now = datetime.now()
         while self.music_list:
             music = self.music_list.pop(0)
@@ -53,8 +53,9 @@ class Box:
                 sleep(seconds)
                 music.play()
                 now = datetime.now()
-            music.start += timedelta(1)
-            self.music_list.append(music)
+            if not test:
+                music.start += timedelta(1)
+                self.music_list.append(music)
 
 
 def test1():
@@ -100,7 +101,7 @@ def test5():
     music = Music(box.directory)  # explicit music object
     start = datetime.now() + timedelta(seconds=1)
     box.add_music(start.strftime('%H:%M:%S'), music)
-    box.start()
+    box.start(test=True)
     assert input('Did you hear the note? (y/n) ') == 'y', 'test5'
 
 
@@ -108,7 +109,7 @@ def test6():
     box = Box(directory='test_music')
     start = datetime.now() + timedelta(seconds=1)
     box.add_music(start.strftime('%H:%M:%S'))  # implicit music object
-    box.start()
+    box.start(test=True)
     assert input('Did you hear the note? (y/n) ') == 'y', 'test6'
 
 
@@ -119,7 +120,7 @@ def test7():
         duration = 3  # must be more than file duration in test_music
         start += timedelta(seconds=duration)
         box.add_music(start=start.strftime('%H:%M:%S'))
-    box.start()
+    box.start(test=True)
     assert input(
         'Did the notes sound every three seconds? (y/n) ') == 'y', 'test7'
 
