@@ -1,10 +1,18 @@
+'Module doc'  # TODO
 from datetime import datetime
 import os
 import random
 
 
 class Music:
+    'Class'  # TODO
     def __init__(self, directory, mp3=None, gain=1.0):
+        '''
+
+        :param directory:
+        :param mp3:
+        :param gain:
+        '''  # TODO
         if not mp3:
             mp3 = random.choice([
                 name[:-4] for name in os.listdir(directory)
@@ -23,39 +31,39 @@ class Music:
         return f'{datetime.now().strftime("%H:%M:%S")} - {self._mp3}'
 
     def play(self):
+        # "%s" for file names with spaces
         cmd = 'cvlc "%s" --gain %s --play-and-exit 2> /dev/null'
         os.system(cmd % (self._filename, self.gain))
 
 
 def test1(names):
-    # A space in the names is not accidental. Files with spaces in the name
-    # should not cause an error.
-    for name in names:
+    for i, name in enumerate(names):
         music = Music(directory='test_music', mp3=name)
-        print(music)
+        print(f'({i + 1}/{len(names)})', music)
         music.play()
     assert input(
         'Were the notes played in direct order? (y/n) ') == 'y', 'test1'
 
 
 def test2():
-    for _ in range(10):
+    num = 10
+    for i in range(num):
         music = Music(directory='test_music')
-        print(music)
+        print(f'({i + 1}/{num})', music)
         music.play()
     assert input('Were the notes played randomly? (y/n) ') == 'y', 'test2'
 
 
 def test3(names):
-    for i, name in enumerate(names):
+    for i, name in enumerate(reversed(names)):
         music = Music(directory='test_music', mp3=name, gain=1-i/10)
-        print(music)
+        print(f'({i + 1}/{len(names)})', music)
         music.play()
     assert input('Did the playback volume decrease? (y/n) ') == 'y', 'test3'
 
 
 if __name__ == '__main__':
-    NAMES = 'd o', 'r e', 'm i', 'f a', 's o', 'l a', 's i'
+    NAMES = 'do', 're', 'mi', 'fa', 'so', 'la', 'si'
     test1(NAMES)
     test2()
-    test3(reversed(NAMES))
+    test3(NAMES)
