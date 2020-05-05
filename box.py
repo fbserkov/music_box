@@ -1,5 +1,6 @@
 from copy import copy
 from datetime import datetime, timedelta
+import sys
 from time import sleep
 
 from music import Music
@@ -48,11 +49,12 @@ class Box:
         now = datetime.now()
         while self.music_list:
             music = self.music_list.pop(0)
-            seconds = (music.start - now).seconds
-            if seconds >= 0:
-                sleep(seconds)
-                music.play()
-                now = datetime.now()
+            print(music, '...', sep='', end='')
+            sys.stdout.flush()
+            sleep((music.start - now).seconds)
+            print('\b\b\b')
+            music.play()
+            now = datetime.now()
             if not test:
                 music.start += timedelta(1)
                 self.music_list.append(music)

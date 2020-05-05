@@ -23,7 +23,6 @@ class Music:
         return f'{datetime.now().strftime("%H:%M:%S")} - {self._mp3}'
 
     def play(self):
-        print(self)
         cmd = 'cvlc "%s" --gain %s --play-and-exit 2> /dev/null'
         os.system(cmd % (self._filename, self.gain))
 
@@ -33,6 +32,7 @@ def test1(names):
     # should not cause an error.
     for name in names:
         music = Music(directory='test_music', mp3=name)
+        print(music)
         music.play()
     assert input(
         'Were the notes played in direct order? (y/n) ') == 'y', 'test1'
@@ -41,6 +41,7 @@ def test1(names):
 def test2():
     for _ in range(10):
         music = Music(directory='test_music')
+        print(music)
         music.play()
     assert input('Were the notes played randomly? (y/n) ') == 'y', 'test2'
 
@@ -48,6 +49,7 @@ def test2():
 def test3(names):
     for i, name in enumerate(names):
         music = Music(directory='test_music', mp3=name, gain=1-i/10)
+        print(music)
         music.play()
     assert input('Did the playback volume decrease? (y/n) ') == 'y', 'test3'
 
