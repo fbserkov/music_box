@@ -16,7 +16,9 @@ class Music:
         self.start = None
 
     def __str__(self):
-        return f'{self.start} - {self.filename}'
+        if self.start:
+            return f'{self.start.strftime("%H:%M:%S")} - {self.filename}'
+        return f'--.--.-- - {self.filename}'
 
     def play(self):
         print(self)
