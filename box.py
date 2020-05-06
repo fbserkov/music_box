@@ -49,11 +49,12 @@ class Box:
         now = datetime.now()
         while self.music_list:
             music = self.music_list.pop(0)
-            print(music, '...', sep='', end='')
+            print('WAIT', music, end='')
             sys.stdout.flush()
             sleep((music.start - now).seconds)
-            print('\b\b\b')
+            print('\rPLAY', end='')
             music.play()
+            print('\rDONE')
             now = datetime.now()
             if not test:
                 music.start += timedelta(1)
