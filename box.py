@@ -42,6 +42,22 @@ class Box:
         ).strftime('%H:%M:%S')
         self.add_period(start, durations[0])
 
+    def add_triple(
+            self, start,
+            durations=(timedelta(minutes=45), timedelta(minutes=10))
+    ):
+        self.add_period(start, durations[0])
+        start = (
+                datetime.strptime(start, '%H:%M:%S') +
+                durations[0] + durations[1]
+        ).strftime('%H:%M:%S')
+        self.add_period(start, durations[0])
+        start = (
+                datetime.strptime(start, '%H:%M:%S') +
+                durations[0] + durations[1]
+        ).strftime('%H:%M:%S')
+        self.add_period(start, durations[0])
+
     def __str__(self):
         return '\n'.join(str(_) for _ in self.music_list)
 
@@ -104,22 +120,31 @@ def test4():
 
 def test5():
     box = Box(directory='test_music')
-    music = Music(box.directory)  # explicit music object
-    start = datetime.now() + timedelta(seconds=1)
-    box.add_music(start.strftime('%H:%M:%S'), music)
-    box.start(test=True)
-    assert input('Did you hear the note? (y/n) ') == 'y', 'test5'
+    box.add_triple(start='00:00:00')
+    assert (
+        [(_.start.hour, _.start.minute) for _ in box.music_list] ==
+        [(0, 0), (0, 45), (0, 55), (1, 40), (1, 50), (2, 35)]
+    ), 'test5'
 
 
 def test6():
     box = Box(directory='test_music')
+    music = Music(box.directory)  # explicit music object
     start = datetime.now() + timedelta(seconds=1)
-    box.add_music(start.strftime('%H:%M:%S'))  # implicit music object
+    box.add_music(start.strftime('%H:%M:%S'), music)
     box.start(test=True)
     assert input('Did you hear the note? (y/n) ') == 'y', 'test6'
 
 
 def test7():
+    box = Box(directory='test_music')
+    start = datetime.now() + timedelta(seconds=1)
+    box.add_music(start.strftime('%H:%M:%S'))  # implicit music object
+    box.start(test=True)
+    assert input('Did you hear the note? (y/n) ') == 'y', 'test7'
+
+
+def test8():
     box = Box(directory='test_music')
     start = datetime.now()
     for _ in range(5):
@@ -128,14 +153,9 @@ def test7():
         box.add_music(start=start.strftime('%H:%M:%S'))
     box.start(test=True)
     assert input(
-        'Did the notes sound every three seconds? (y/n) ') == 'y', 'test7'
+        'Did the notes sound every three seconds? (y/n) ') == 'y', 'test8'
 
 
 if __name__ == '__main__':
-    test1()
-    test2()
-    test3()
-    test4()
-    test5()
-    test6()
-    test7()
+    for num in 1, 2, 3, 4, 5, 6, 7, 8:
+        eval(f'test{num}()')
