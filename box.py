@@ -7,11 +7,27 @@ from music import Music
 
 
 class Box:
+    """
+    TODO
+    """
     def __init__(self, directory):
+        """
+        Box object constructor.
+
+        :param directory: path where mp3-files to use are located
+        """
         self.directory = directory
         self.music_list = []
 
     def add_music(self, start, music=None):
+        """
+        Adds to the playback schedule one sound signal tied to the specified
+        time.
+
+        :param start:
+        :param music:
+        :return:
+        """
         now = datetime.now()
         start = datetime.strptime(
             now.strftime('%d.%m.%Y') + ' ' + start, '%d.%m.%Y %H:%M:%S')
@@ -24,6 +40,13 @@ class Box:
         self.music_list.sort(key=lambda _: _.start)
 
     def add_period(self, start, duration=timedelta(minutes=45)):
+        """
+        Adds one period to the playback schedule: signal of the beginning
+        and signal of end.
+
+        :param start: start time of the period
+        :param duration: length of the period
+        """
         self.add_music(start)
         start = (
             datetime.strptime(start, '%H:%M:%S') +
@@ -35,6 +58,13 @@ class Box:
             self, start,
             durations=(timedelta(minutes=45), timedelta(minutes=5))
     ):
+        """
+        Adds two periods at once.
+
+        :param start: start time of the first period
+        :param durations: a tuple containing the length of periods and the gap
+        between periods
+        """
         self.add_period(start, durations[0])
         start = (
                 datetime.strptime(start, '%H:%M:%S') +
@@ -46,6 +76,13 @@ class Box:
             self, start,
             durations=(timedelta(minutes=45), timedelta(minutes=10))
     ):
+        """
+        Adds three periods at once.
+
+        :param start: start time of the first period
+        :param durations: a tuple containing the length of periods and the gap
+        between periods
+        """
         self.add_period(start, durations[0])
         start = (
                 datetime.strptime(start, '%H:%M:%S') +
@@ -59,9 +96,18 @@ class Box:
         self.add_period(start, durations[0])
 
     def __str__(self):
+        """
+        Forms a string representation of a Box object as a set string
+        representation of a contained Music objects.
+        """
         return '\n'.join(str(_) for _ in self.music_list)
 
     def start(self, test=False):
+        """
+        Launches the generated playback schedule to work.
+
+        :param test: if true, the loop will not be infinite.
+        """
         now = datetime.now()
         while self.music_list:
             music = self.music_list.pop(0)
@@ -81,6 +127,22 @@ class Box:
 
 
 def test1():
+    """
+    Box.add_music() method verification: that the ordering of Music objects by
+    start time is respected.
+    """
+    box = Box(directory='test_music')
+    box.add_music(start='00:00:00')
+    box.add_music(start='02:00:00')
+    box.add_music(start='01:00:00')
+    assert [_.start.hour for _ in box.music_list] == [0, 1, 2], 'test1'
+
+
+def test2():
+    """
+    Box.add_music() method verification: that the elapsed time is scheduled
+    for the next day.
+    """
     box = Box(directory='test_music')
     start1 = (datetime.now() + timedelta(minutes=5)).strftime('%H:%M:%S')
     start2 = (datetime.now() - timedelta(minutes=5)).strftime('%H:%M:%S')
@@ -89,18 +151,11 @@ def test1():
     assert ((
         box.music_list[1].start.date() -
         box.music_list[0].start.date()
-    ) == timedelta(1)), 'test1'
-
-
-def test2():
-    box = Box(directory='test_music')
-    box.add_music(start='00:00:00')
-    box.add_music(start='02:00:00')
-    box.add_music(start='01:00:00')
-    assert [_.start.hour for _ in box.music_list] == [0, 1, 2], 'test2'
+    ) == timedelta(1)), 'test2'
 
 
 def test3():
+    """Box.add_period() method verification."""
     box = Box(directory='test_music')
     box.add_period(start='00:00:00')
     assert (
@@ -110,6 +165,7 @@ def test3():
 
 
 def test4():
+    """Box.add_couple() method verification."""
     box = Box(directory='test_music')
     box.add_couple(start='00:00:00')
     assert (
@@ -119,6 +175,7 @@ def test4():
 
 
 def test5():
+    """Box.add_triple() method verification."""
     box = Box(directory='test_music')
     box.add_triple(start='00:00:00')
     assert (
@@ -128,6 +185,7 @@ def test5():
 
 
 def test6():
+    """Checking the launch to play explicitly specified sound file."""
     box = Box(directory='test_music')
     music = Music(box.directory)  # explicit music object
     start = datetime.now() + timedelta(seconds=1)
@@ -137,14 +195,18 @@ def test6():
 
 
 def test7():
+    """Checking the launch for play implicitly specified sound file."""
     box = Box(directory='test_music')
     start = datetime.now() + timedelta(seconds=1)
-    box.add_music(start.strftime('%H:%M:%S'))  # implicit music object
+    box.add_music(start.strftime('%H:%M:%S'))
     box.start(test=True)
     assert input('Did you hear the note? (y/n) ') == 'y', 'test7'
 
 
 def test8():
+    """
+    Checking the launch to play music according to the generated schedule.
+    """
     box = Box(directory='test_music')
     start = datetime.now()
     for _ in range(5):
